@@ -1,42 +1,8 @@
 import Http from "../utils/http"
+import type { IPostMessages, IMessagesResponse, IConnectionTest, IGetHealth } from "../interfaces/Chat"
+
 const baseRsmUrl = import.meta.env.VITE_RSM_API_URL
 const APIKey = import.meta.env.VITE_API_KEY
-
-interface IPostMessages {
-    message: string,
-    sender: string,
-    timestamp?: number
-}
-
-interface IProcessingInfo {
-    function_name: string,
-    method: string,
-    message_length: number,
-}
-
-interface IMessagesResponse {
-    status: string,
-    message: string,
-    timestamp: string,
-    received_from: string,
-    received_message: string,
-    response: string,
-    processing_info: IProcessingInfo
-}
-
-interface IConnectionTest {
-    status: string,
-    message: string,
-    timestamp: string,
-    endpoint: string
-}
-
-interface IGetHealth {
-    status: string,
-    message: string,
-    timestamp: string,
-    version: string,
-}
 
 class RsmChat {
     private http: Http
