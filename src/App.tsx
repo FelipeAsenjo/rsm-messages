@@ -1,8 +1,20 @@
+import { useEffect } from "react";
+import RsmChatService from "./services/rsmChatService";
 
 import MessagesForm from "./components/MessagesForm";
 
+const chatService = new RsmChatService()
+
 function App() {
 
+  useEffect(() => {
+    const fetchHealth = async () => {
+      const data = await chatService.mockGetHealth(true)
+      console.log('data', data)
+    }
+
+    fetchHealth()
+  }, [])
 
   return (
     <>
