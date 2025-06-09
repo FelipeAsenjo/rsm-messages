@@ -13,7 +13,7 @@ function App() {
             <h1>RSM Chat</h1>
           </div>
         </header>
-        <main className="flex flex-col h-full w-full max-w-[768px] p-4 text-text">
+        <main className="flex flex-col self-center h-full w-full max-w-[768px] p-4 text-text">
 
           <section className="flex-1">
             adios mundo
