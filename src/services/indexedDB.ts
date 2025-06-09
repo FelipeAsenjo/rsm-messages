@@ -20,6 +20,16 @@ class IndexedDB {
         return await db.getAll('messages');
     }
 
+    async updateMessageStatus(id: number, status: IPostMessages['status']) {
+        const db = await dbPromise;
+        const msg = await db.get('messages', id);
+
+        if (msg) {
+            msg.status = status;
+            await db.put('messages', msg);
+        }
+    }
+
     async clearMessages() {
         const db = await dbPromise;
         return await db.clear('messages');
