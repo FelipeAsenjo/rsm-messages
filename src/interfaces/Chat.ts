@@ -5,10 +5,11 @@ interface IBaseMessage {
 }
 
 export interface IPostMessages {
-    status: 'success' | 'error' | '',
+    id?: string,
+    status: 'sent' | 'success' | 'error' | null,
     message: string,
     sender: string,
-    timestamp: number | null,
+    timestamp: string | null,
 }
 
 export interface IProcessingInfo {
