@@ -5,13 +5,10 @@ interface IBaseMessage {
 }
 
 export interface IPostMessages {
+    status: 'success' | 'error' | '',
     message: string,
     sender: string,
     timestamp: number | null,
-}
-
-export interface ISavedMessage extends IBaseMessage {
-    wasSent: boolean
 }
 
 export interface IProcessingInfo {

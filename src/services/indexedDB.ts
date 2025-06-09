@@ -1,5 +1,5 @@
 import { openDB } from 'idb'
-import type { ISavedMessage } from '../interfaces/Chat';
+import type { IPostMessages } from '../interfaces/Chat';
 
 const dbPromise = openDB('chat-db', 1, {
     upgrade(db) {
@@ -10,12 +10,12 @@ const dbPromise = openDB('chat-db', 1, {
 class IndexedDB {
     //! HANDLE ERRORS
 
-    async saveMessage(messageObj: ISavedMessage) {
+    async saveMessage(messageObj: IPostMessages) {
         const db = await dbPromise;
         await db.add('messages', messageObj);
     }
 
-    async getAllMessages(): Promise<ISavedMessage[]> {
+    async getAllMessages(): Promise<IPostMessages[]> {
         const db = await dbPromise;
         return await db.getAll('messages');
     }
