@@ -4,6 +4,7 @@ import type { IPostMessages } from '../interfaces/Chat';
 
 import { useChatStore } from '../store/chatStore';
 import { useStatusStore } from '../store/appStatusStore';
+import { useUserStore } from '../store/userStore';
 import RsmChat from '../services/rsmChatService';
 const rsmChat = new RsmChat()
 
@@ -12,12 +13,13 @@ const idxDB = new IndexedDB()
 
 const initialFormValues: IPostMessages = {
   status: null,
-  sender: 'Felipe', //! REPLACE FOR INDEXED DB USER
+  sender: '',
   message: '',
   timestamp: null
 }
 
 const MessagesForm = React.memo(() => {
+  const { username } = useUserStore(state => state)
   const { addMessage, updateMessageStatus } = useChatStore((state) => state)
   const { addToStack } = useStatusStore(state => state)
   const [formValues, setFormValues] = useState<IPostMessages>(initialFormValues)
@@ -45,7 +47,7 @@ const MessagesForm = React.memo(() => {
     addMessage(messageToStore)
     const messageId = await idxDB.saveMessage(messageToStore)
 
-    const serverValues = { ...formValues }
+    const serverValues = { ...formValues, sender: username }
     setFormValues(initialFormValues)
 
     try {
