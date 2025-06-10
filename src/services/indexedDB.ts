@@ -10,9 +10,9 @@ const dbPromise = openDB('chat-db', 1, {
 class IndexedDB {
     //! HANDLE ERRORS
 
-    async saveMessage(messageObj: IPostMessages) {
+    async saveMessage(messageObj: IPostMessages): Promise<IDBValidKey> {
         const db = await dbPromise;
-        await db.add('messages', messageObj);
+        return await db.add('messages', messageObj);
     }
 
     async getAllMessages(): Promise<IPostMessages[]> {
