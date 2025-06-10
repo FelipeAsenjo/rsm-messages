@@ -18,7 +18,7 @@ interface IStatusStore {
 
 export const useStatusStore = create<IStatusStore>((set) => ({
     health: null,
-    toastStack: [{ id: 123, type: 'error', message: 'esto es un error'}, { id: 124, type: 'success', message: 'esto es un exito'}],
+    toastStack: [],
     setHealth: (health: IGetHealth) => set(() => ({ health })),
     addToStack: (toastMessage: IToastMessages) => set((state) => ({ toastStack: [...state.toastStack, toastMessage]})),
     removeFromStack: (id: IToastMessages['id']) => set((state) => ({ toastStack: state.toastStack.filter(toast => toast.id !== id)})),
