@@ -19,6 +19,7 @@ const initialFormValues: IPostMessages = {
 const MessagesForm = React.memo(() => {
   const { addMessage, updateMessageStatus } = useChatStore((state) => state)
   const [formValues, setFormValues] = useState<IPostMessages>(initialFormValues)
+  const [loading, setLoading] = useState(false)
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -31,6 +32,7 @@ const MessagesForm = React.memo(() => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    setLoading(true)
 
     const messageToStore = {
       ...formValues,
@@ -46,6 +48,8 @@ const MessagesForm = React.memo(() => {
 
     try {
       const res = await rsmChat.postMessages(serverValues)
+
+      setLoading(false)
 
       const messageFromServer = {
         sender: "bot",
@@ -80,7 +84,10 @@ const MessagesForm = React.memo(() => {
           className="bg-primary rounded-full p-2 hover:scale-105 ease-in-out duration-200 disabled:bg-text"
           disabled={ !formValues.message.length }
         >
+          { loading ?
+            <div className="animate-spin rounded-full h-6 w-6 border-t-8 border-blue-500 border-solid bg-primary-light"></div> : 
             <IoSend size={28} color="white" />                
+          }
         </button>
     </form>
   )
