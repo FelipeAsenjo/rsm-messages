@@ -75,7 +75,11 @@ const MessagesForm = React.memo(() => {
           value={ formValues.message }
           onChange={(e) => handleInputChange(e)} 
         />
-        <button type="submit" className="bg-primary rounded-full p-2 hover:scale-105 ease-in-out duration-200">
+        <button 
+          type="submit" 
+          className="bg-primary rounded-full p-2 hover:scale-105 ease-in-out duration-200 disabled:bg-text"
+          disabled={ !formValues.message.length }
+        >
             <IoSend size={28} color="white" />                
         </button>
     </form>
