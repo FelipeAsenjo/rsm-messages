@@ -8,8 +8,6 @@ const dbPromise = openDB('chat-db', 1, {
 }); 
 
 class IndexedDB {
-    //! HANDLE ERRORS
-
     async saveMessage(messageObj: IPostMessages): Promise<IDBValidKey> {
         const db = await dbPromise;
         return await db.add('messages', messageObj);

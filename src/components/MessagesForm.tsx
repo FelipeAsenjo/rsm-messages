@@ -3,6 +3,7 @@ import { IoSend } from "react-icons/io5";
 import type { IPostMessages } from '../interfaces/Chat';
 
 import { useChatStore } from '../store/chatStore';
+import { useStatusStore } from '../store/appStatusStore';
 import RsmChat from '../services/rsmChatService';
 const rsmChat = new RsmChat()
 
@@ -18,6 +19,7 @@ const initialFormValues: IPostMessages = {
 
 const MessagesForm = React.memo(() => {
   const { addMessage, updateMessageStatus } = useChatStore((state) => state)
+  const { addToStack } = useStatusStore(state => state)
   const [formValues, setFormValues] = useState<IPostMessages>(initialFormValues)
   const [loading, setLoading] = useState(false)
 
@@ -62,20 +64,27 @@ const MessagesForm = React.memo(() => {
       updateMessageStatus(Number(messageId), 'success')
       await idxDB.saveMessage(messageFromServer)
     } catch(err) {
+      addToStack({ 
+          id: new Date().getTime(), 
+          type: 'error', 
+          message: 'Error submiting your message, try again later.'
+      })
+
       updateMessageStatus(Number(messageId), 'error')
       await idxDB.updateMessageStatus(Number(messageId), 'error')
-      //! HANDLE ERROR
-      console.log('error', err)
+
+      console.error(err)
     }
   }
 
   return (
-    <form className="flex self-end w-full gap-2" onSubmit={(e) => handleSubmit(e)}>
+    <form className="flex self-end w-full gap-2" onSubmit={loading ? () => {} : (e) => handleSubmit(e)}>
         <input 
           type="text" 
           className="rounded-lg p-2 shadow-md shadow-primary flex-1" 
           name="message" 
           placeholder="Type a message..." 
+          disabled={ loading }
           value={ formValues.message }
           onChange={(e) => handleInputChange(e)} 
         />

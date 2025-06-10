@@ -16,8 +16,14 @@ const useHealthPolling = (interval = 5000) => {
 
         if (isMounted) setHealth(data);
       } catch (err) {
-        console.log('error', err)
-        // if (isMounted) setHealth('error');
+        if(isMounted) setHealth({ 
+          status: 'not-healthy', 
+          message: 'Fail to fetch health status' , 
+          timestamp: String(new Date().getTime()) , 
+          version: "1.0.0" 
+        })
+
+        console.log('errors', err)
       }
     };
 

@@ -1,33 +1,41 @@
+import { useStatusStore } from "../store/appStatusStore";
 
 class Http {
     async GET(url: string) {
-        try {
-            const res = await fetch(url)
-            const data = await res.json()
-            
-            return data
-        } catch(err) {
-            //! TODO: HANDLE ERROR
-            console.log('error', err)
+        const res = await fetch(url)
+
+        if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`)
         }
+
+        return await res.json()
+        // useStatusStore.getState().addToStack({ 
+        //     id: new Date().getTime(), 
+        //     type: 'error', 
+        //     message: 'Error getting your data, try again later.'
+        // })
     }
 
     async POST(url: string, body: string = '') {
-        try {
-            const data = await fetch(url, {
-                body,
-                method: "POST",
-                headers: {
-                    "Accept": "application/json",
-                    "Content-Type": "application/json"
-                }
-            })
+        const res = await fetch(url, {
+            body,
+            method: "POST",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            }
+        })
 
-            return await data.json()
-        } catch(err) {
-            //! TODO: HANDLE ERROR
-            console.log('error', err)
+        if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`)
         }
+
+        return await res.json()
+        // useStatusStore.getState().addToStack({ 
+        //     id: new Date().getTime(), 
+        //     type: 'error', 
+        //     message: 'Error sending your data, try again later.'
+        // })
     }
 }
 
