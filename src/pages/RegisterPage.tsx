@@ -29,6 +29,7 @@ export default function RegisterPage() {
                     name="username" 
                     placeholder='Username (sender)' 
                     onChange={(e) => handleChange(e)}
+                    required
                 />
                 <button className='bg-primary text-white w-fit p-2 rounded-md' type='submit'>Enter</button>
             </form>
