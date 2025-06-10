@@ -1,6 +1,7 @@
 import { useEffect } from "react";
-import RsmChatService from "./services/rsmChatService";
+import { ImCancelCircle } from "react-icons/im";
 import { useChatStore } from "./store/chatStore";
+import { useStatusStore } from "./store/appStatusStore";
 
 import MessagesForm from "./components/MessagesForm";
 import Header from "./components/Header";
@@ -9,20 +10,15 @@ import useHealthPolling from "./hooks/useHealthPolling";
 import IndexedDB from './services/indexedDB';
 const idxDB = new IndexedDB()
 
-const chatService = new RsmChatService()
 const commonMsgStyles = 'flex p-2 w-fit rounded-md text-black'
 
 function App() {
   const { messages, setMessages } = useChatStore(state => state)
+  const { toastStack, removeFromStack } = useStatusStore(state => state)
 
   useHealthPolling(15000)
 
   useEffect(() => {
-    const fetchHealth = async () => {
-      const data = await chatService.mockGetHealth(true)
-      console.log('data', data)
-    }
-
     const persistanceMessages = async () => {
       const storedMessages = await idxDB.getAllMessages()
       // const storedMessages = await idxDB.clearMessages()
@@ -31,14 +27,13 @@ function App() {
     }
 
     persistanceMessages()
-    fetchHealth()
   }, [])
 
   return (
     <>
       <div className="flex flex-col justify-center h-screen">
         <Header />
-        <main className="flex flex-col self-center h-full w-full max-w-[768px] px-4 text-text">
+        <main className="flex flex-col self-center h-full w-full max-w-[768px] px-4 text-text relative">
 
           <section className="flex-1 flex flex-col-reverse">
             { messages.map(msg => (
@@ -55,6 +50,17 @@ function App() {
           </section>
 
           <MessagesForm />
+
+          <section className="absolute top-2 right-2 flex flex-col gap-2">
+            { !!toastStack && toastStack.map(toast => (
+              <div key={toast.id} className={`flex gap-1 text-white p-2 rounded-lg ${toast.type === 'error' ? 'bg-error' : 'bg-secondary'}`}>
+                <button className="hover:scale-105 ease-in-out duration-200" onClick={() => removeFromStack(toast.id)}>
+                  <ImCancelCircle size={24} />
+                </button>
+                <p>{ toast.message }</p>
+              </div>
+            )) }
+          </section>
         </main>
       </div>
     </>

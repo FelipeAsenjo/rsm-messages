@@ -1,12 +1,26 @@
 import { create } from 'zustand'
 import type { IGetHealth } from '../interfaces/Chat'
 
-interface StatusStore {
-    health: IGetHealth | null,
-    setHealth: (health: IGetHealth) => void
+interface IToastMessages {
+    id: number
+    type: 'success' | 'error'
+    message: string
 }
 
-export const useStatusStore = create<StatusStore>((set) => ({
+interface IStatusStore {
+    health: IGetHealth | null,
+    toastStack: IToastMessages[],
+    setHealth: (health: IGetHealth) => void,
+    addToStack: (toastMessage: IToastMessages) => void,
+    removeFromStack: (id: IToastMessages['id']) => void,
+    clearStack: () => void
+}
+
+export const useStatusStore = create<IStatusStore>((set) => ({
     health: null,
-    setHealth: (health: IGetHealth) => set(() => ({ health }))
+    toastStack: [{ id: 123, type: 'error', message: 'esto es un error'}, { id: 124, type: 'success', message: 'esto es un exito'}],
+    setHealth: (health: IGetHealth) => set(() => ({ health })),
+    addToStack: (toastMessage: IToastMessages) => set((state) => ({ toastStack: [...state.toastStack, toastMessage]})),
+    removeFromStack: (id: IToastMessages['id']) => set((state) => ({ toastStack: state.toastStack.filter(toast => toast.id !== id)})),
+    clearStack: () => set(() => ({ toastStack: []}))
 }));
