@@ -1,5 +1,3 @@
-import { useStatusStore } from "../store/appStatusStore";
-
 class Http {
     async GET(url: string) {
         const res = await fetch(url)
