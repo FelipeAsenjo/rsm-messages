@@ -5,6 +5,7 @@ import { useChatStore } from "./store/chatStore";
 import MessagesForm from "./components/MessagesForm";
 import Header from "./components/Header";
 
+import useHealthPolling from "./hooks/useHealthPolling";
 import IndexedDB from './services/indexedDB';
 const idxDB = new IndexedDB()
 
@@ -14,6 +15,8 @@ const commonMsgStyles = 'flex p-2 w-fit rounded-md text-black'
 function App() {
   const { messages, setMessages } = useChatStore(state => state)
 
+  useHealthPolling(15000)
+
   useEffect(() => {
     const fetchHealth = async () => {
       const data = await chatService.mockGetHealth(true)
@@ -22,6 +25,7 @@ function App() {
 
     const persistanceMessages = async () => {
       const storedMessages = await idxDB.getAllMessages()
+      // const storedMessages = await idxDB.clearMessages()
 
       setMessages(storedMessages)
     }
@@ -32,9 +36,9 @@ function App() {
 
   return (
     <>
-      <div className="flex flex-col justify-center h-dvh relative">
+      <div className="flex flex-col justify-center h-screen">
         <Header />
-        <main className="flex flex-col self-center h-full w-full max-w-[768px] p-4 text-text">
+        <main className="flex flex-col self-center h-full w-full max-w-[768px] px-4 text-text">
 
           <section className="flex-1 flex flex-col-reverse">
             { messages.map(msg => (
