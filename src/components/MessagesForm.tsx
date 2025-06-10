@@ -72,6 +72,7 @@ const MessagesForm = React.memo(() => {
           type: 'error', 
           message: 'Error submiting your message, try again later.'
       })
+      setLoading(false)
 
       updateMessageStatus(Number(messageId), 'error')
       await idxDB.updateMessageStatus(Number(messageId), 'error')
