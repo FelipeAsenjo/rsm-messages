@@ -21,15 +21,16 @@ export default function RegisterPage() {
     }
 
     return (
-        <main className='place-content-center max-w-[1200px]'>
-            <form className='border' onSubmit={(e) => handleSubmit(e)}>
+        <main className='flex justify-center items-center max-w-[1200px] h-dvh'>
+            <form className='flex flex-col items-center w-80 h-fit p-4 shadow-md shadow-primary-light rounded-lg' onSubmit={(e) => handleSubmit(e)}>
                 <input 
+                    className='my-2 p-2 rounded-md border border-primary'
                     type="text" 
                     name="username" 
-                    placeholder='Write your name (sender)' 
+                    placeholder='Username (sender)' 
                     onChange={(e) => handleChange(e)}
                 />
-                <button type='submit'>Enter</button>
+                <button className='bg-primary text-white w-fit p-2 rounded-md' type='submit'>Enter</button>
             </form>
         </main>
     )
