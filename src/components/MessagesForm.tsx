@@ -40,6 +40,7 @@ const MessagesForm = React.memo(() => {
 
     const messageToStore = {
       ...formValues,
+      sender: username,
       status: 'sent' as IPostMessages['status'],
       timestamp: new Date().toISOString()
     }
