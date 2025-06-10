@@ -5,7 +5,7 @@ interface IBaseMessage {
 }
 
 export interface IPostMessages {
-    id?: string,
+    id?: number,
     status: 'sent' | 'success' | 'error' | null,
     message: string,
     sender: string,
